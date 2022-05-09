@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Damas.Piezas;
 
 import java.awt.Point;
@@ -11,34 +8,16 @@ import java.util.List;
 import Damas.Movimiento.*;
 
 public class Computadora extends Jugador {
-    /** The weight of being able to skip. */
+   
 	private static final double WEIGHT_SKIP = 25;
-	
-	/** The weight of being able to skip on next turn. */
 	private static final double SKIP_ON_NEXT = 20;
-	
-	/** The weight associated with being safe then safe before and after. */
 	private static final double SAFE_SAFE = 5;
-
-	/** The weight associated with being safe then unsafe before and after. */
 	private static final double SAFE_UNSAFE = -40;
-
-	/** The weight associated with being unsafe then safe before and after. */
 	private static final double UNSAFE_SAFE = 40;
-
-	/** The weight associated with being unsafe then unsafe before and after. */
 	private static final double UNSAFE_UNSAFE = -40;
-	
-	/** The weight of a checker being safe. */
 	private static final double SAFE = 3;
-	
-	/** The weight of a checker being unsafe. */
 	private static final double UNSAFE = -5;
-	
-	/** The factor used to multiply some weights when the checker being
-	 * observed is a king. */
 	private static final double KING_FACTOR = 2;
-	/* ------------ */
 
 	@Override
 	public boolean esHumano() {
@@ -48,16 +27,16 @@ public class Computadora extends Jugador {
 	@Override
 	public void updateGame(Game game) {
 		
-		// Nothing to do
+		
 		if (game == null || game.isGameOver()) {
 			return;
 		}
 			
-		// Get the available moves
+		
 		Game copy = game.copy();
 		List<Move> moves = getMoves(copy);
 
-		// Determine which one is the best
+		
 		int n = moves.size(), count = 1;
 		double bestWeight = Move.WEIGHT_INVALID;
 		for (int i = 0; i < n; i ++) {
@@ -71,7 +50,6 @@ public class Computadora extends Jugador {
 			}
 		}
 
-		// Randomly select a move
 		int move = ((int) (Math.random() * count)) % count;
 		for (int i = 0; i < n; i ++) {
 			Move m = moves.get(i);
@@ -85,15 +63,10 @@ public class Computadora extends Jugador {
 		}
 	}
 	
-	/**
-	 * Gets all the available moves and skips for the current player.
-	 * 
-	 * @param game	the current game state.
-	 * @return a list of valid moves that the player can make.
-	 */
+	
 	private List<Move> getMoves(Game game) {
 		
-		// The next move needs to be a skip
+		
 		if (game.getSkipIndex() >= 0) {
 			
 			List<Move> moves = new ArrayList<>();
@@ -106,7 +79,6 @@ public class Computadora extends Jugador {
 			return moves;
 		}
 		
-		// Get the checkers
 		List<Point> checkers = new ArrayList<>();
 		Tabla b = game.getBoard();
 		if (game.isP1Turn()) {
@@ -117,7 +89,7 @@ public class Computadora extends Jugador {
 			checkers.addAll(b.find(Tabla.WHITE_KING));
 		}
 		
-		// Determine if there are any skips
+
 		List<Move> moves = new ArrayList<>();
 		for (Point checker : checkers) {
 			int index = Tabla.toIndex(checker);
@@ -129,7 +101,7 @@ public class Computadora extends Jugador {
 			}
 		}
 		
-		// If there are no skips, add the regular moves
+
 		if (moves.isEmpty()) {
 			for (Point checker : checkers) {
 				int index = Tabla.toIndex(checker);
@@ -143,15 +115,7 @@ public class Computadora extends Jugador {
 		return moves;
 	}
 	
-	/**
-	 * Gets the number of skips that can be made in one turn from a given start
-	 * index.
-	 * 
-	 * @param game			the game state to check against.
-	 * @param startIndex	the start index of the skips.
-	 * @param isP1Turn		the original player turn flag.
-	 * @return the maximum number of skips available from the given point.
-	 */
+	
 	private int getSkipDepth(Game game, int startIndex, boolean isP1Turn) {
 		
 		// Trivial case
@@ -174,14 +138,7 @@ public class Computadora extends Jugador {
 		return depth + (skips.isEmpty()? 0 : 1);
 	}
 	
-	/**
-	 * Determines the weight of a move based on a number of factors (e.g. how
-	 * safe the checker is before/after, whether it can take an opponents
-	 * checker after, etc).
-	 * 
-	 * @param game	the current game state.
-	 * @param m		the move to test.
-	 */
+		
 	private void getMoveWeight(Game game, Move m) {
 		
 		Point start = m.getStart(), end = m.getEnd();
@@ -192,10 +149,10 @@ public class Computadora extends Jugador {
 		int id = b.get(startIndex);
 		boolean isKing = (id == Tabla.BLACK_KING || id == Tabla.WHITE_KING);
 		
-		// Set the initial weight
+		
 		m.changeWeight(getSafetyWeight(b, game.isP1Turn()));
 		
-		// Make the move
+		
 		if (!game.move(m.getStartIndex(), m.getEndIndex())) {
 			m.setWeight(Move.WEIGHT_INVALID);
 			return;
@@ -206,7 +163,7 @@ public class Computadora extends Jugador {
 		isKing = (id == Tabla.BLACK_KING || id == Tabla.WHITE_KING);
 		boolean safeAfter = true;
 		
-		// Determine if a skip could be made on next move
+		
 		if (changed) {
 			safeAfter = Movimiento.isSafe(b, end);
 			int depth = getSkipDepth(game, endIndex, !game.isP1Turn());
@@ -217,13 +174,13 @@ public class Computadora extends Jugador {
 			}
 		}
 		
-		// Check how many more skips are available
+
 		else {
 			int depth = getSkipDepth(game, startIndex, game.isP1Turn());
 			m.changeWeight(WEIGHT_SKIP * depth * depth);
 		}
 		
-		// Add the weight appropriate to how safe the checker is
+		
 		if (safeBefore && safeAfter) {
 			m.changeWeight(SAFE_SAFE);
 		} else if (!safeBefore && safeAfter) {
@@ -237,18 +194,10 @@ public class Computadora extends Jugador {
 				changed? !game.isP1Turn() : game.isP1Turn()));
 	}
 	
-	/**
-	 * Calculates the 'safety' state of the game for the player specified. The
-	 * player has 'safe' and 'unsafe' checkers, which respectively, cannot and
-	 * can be skipped by the opponent in the next turn.
-	 * 
-	 * @param b			the board state to check against.
-	 * @param isBlack	the flag indicating if black checkers should be observed.
-	 * @return the weight corresponding to how safe the player's checkers are.
-	 */
+	
 	private double getSafetyWeight(Tabla b, boolean isBlack) {
 		
-		// Get the checkers
+		
 		double weight = 0;
 		List<Point> checkers = new ArrayList<>();
 		if (isBlack) {
@@ -259,7 +208,7 @@ public class Computadora extends Jugador {
 			checkers.addAll(b.find(Tabla.WHITE_KING));
 		}
 		
-		// Determine conditions for each checker
+		
 		for (Point checker : checkers) {
 			int index = Tabla.toIndex(checker);
 			int id = b.get(index);

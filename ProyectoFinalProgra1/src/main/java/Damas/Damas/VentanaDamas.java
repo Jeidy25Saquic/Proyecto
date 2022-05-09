@@ -37,12 +37,12 @@ public class VentanaDamas extends  JFrame{
 	
 	public VentanaDamas(int width, int height, String title) {
 		
-		// Setup the window
+		
 		super(title);
 		super.setSize(width, height);
 		super.setLocationByPlatform(true);
 		
-		// Setup the components
+		
 		JPanel layout = new JPanel(new BorderLayout());
 		this.board = new DamasTabla(this);
 		this.opts = new PanelOp(this);

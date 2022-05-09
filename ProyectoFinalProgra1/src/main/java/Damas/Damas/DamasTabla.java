@@ -401,7 +401,7 @@ public class DamasTabla  extends JButton  {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			// Get the new mouse coordinates and handle the click
+			
 			Point m = DamasTabla.this.getMousePosition();
 			if (m != null) {
 				handleClick(m.x, m.y);

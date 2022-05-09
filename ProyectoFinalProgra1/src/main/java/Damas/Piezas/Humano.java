@@ -10,10 +10,7 @@ public class Humano extends Jugador{
 		return true;
 	}
 
-	/**
-	 * Performs no updates on the game. As human players can interact with the
-	 * user interface to update the game.
-	 */
+	
 	@Override
 	public void updateGame(Game game) {}
 }

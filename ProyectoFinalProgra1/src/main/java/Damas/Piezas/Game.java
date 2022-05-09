@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Damas.Piezas;
 import java.awt.Point;
 import java.util.List;
@@ -9,13 +6,13 @@ import java.util.List;
 import Damas.Movimiento.*;
 
 public class Game {
-   /** The current state of the checker board. */
+  
 	private Tabla board;
 	
-	/** The flag indicating if it is player 1's turn. */
+	
 	private boolean isP1Turn;
 	
-	/** The index of the last skip, to allow for multiple skips in a turn. */
+	
 	private int skipIndex;
 	
 	public Game() {
@@ -32,12 +29,7 @@ public class Game {
 		this.skipIndex = skipIndex;
 	}
 	
-	/**
-	 * Creates a copy of this game such that any modifications made to one are
-	 * not made to the other.
-	 * 
-	 * @return an exact copy of this game.
-	 */
+	
 	public Game copy() {
 		Game g = new Game();
 		g.board = board.copy();
@@ -46,23 +38,14 @@ public class Game {
 		return g;
 	}
 	
-	/**
-	 * Resets the game of checkers to the initial state.
-	 */
+	
 	public void restart() {
 		this.board = new Tabla();
 		this.isP1Turn = true;
 		this.skipIndex = -1;
 	}
 	
-	/**
-	 * Attempts to make a move from the start point to the end point.
-	 * 
-	 * @param start	the start point for the move.
-	 * @param end	the end point for the move.
-	 * @return true if and only if an update was made to the game state.
-	 * @see {@link #move(int, int)}
-	 */
+	
 	public boolean move(Point start, Point end) {
 		if (start == null || end == null) {
 			return false;
@@ -70,29 +53,22 @@ public class Game {
 		return move(Tabla.toIndex(start), Tabla.toIndex(end));
 	}
 	
-	/**
-	 * Attempts to make a move given the start and end index of the move.
-	 * 
-	 * @param startIndex	the start index of the move.
-	 * @param endIndex		the end index of the move.
-	 * @return true if and only if an update was made to the game state.
-	 * @see {@link #move(Point, Point)}
-	 */
+	
 	public boolean move(int startIndex, int endIndex) {
 		
-		// Validate the move
+		
 		if (!Movimiento.isValidMove(this, startIndex, endIndex)) {
 			return false;
 		}
 		
-		// Make the move
+		
 		Point middle = Tabla.middle(startIndex, endIndex);
 		int midIndex = Tabla.toIndex(middle);
 		this.board.set(endIndex, board.get(startIndex));
 		this.board.set(midIndex, Tabla.EMPTY);
 		this.board.set(startIndex, Tabla.EMPTY);
 		
-		// Make the checker a king if necessary
+		
 		Point end = Tabla.toPoint(endIndex);
 		int id = board.get(endIndex);
 		boolean switchTurn = false;
@@ -104,7 +80,7 @@ public class Game {
 			switchTurn = true;
 		}
 		
-		// Check if the turn should switch (i.e. no more skips)
+		
 		boolean midValid = Tabla.isValidIndex(midIndex);
 		if (midValid) {
 			this.skipIndex = endIndex;
@@ -121,21 +97,12 @@ public class Game {
 		return true;
 	}
 	
-	/**
-	 * Gets a copy of the current board state.
-	 * 
-	 * @return a non-reference to the current game board state.
-	 */
+	
 	public Tabla getBoard() {
 		return board.copy();
 	}
 	
-	/**
-	 * Determines if the game is over. The game is over if one or both players
-	 * cannot make a single move during their turn.
-	 * 
-	 * @return true if the game is over.
-	 */
+	
 	public boolean isGameOver() {
 
 		// Ensure there is at least one of each checker
@@ -176,45 +143,33 @@ public class Game {
 		return skipIndex;
 	}
 	
-	/**
-	 * Gets the current game state as a string of data that can be parsed by
-	 * {@link #setGameState(String)}.
-	 * 
-	 * @return a string representing the current game state.
-	 * @see {@link #setGameState(String)}
-	 */
+	
 	public String getGameState() {
 		
-		// Add the game board
+		
 		String state = "";
 		for (int i = 0; i < 32; i ++) {
 			state += "" + board.get(i);
 		}
 		
-		// Add the other info
+		
 		state += (isP1Turn? "1" : "0");
 		state += skipIndex;
 		
 		return state;
 	}
 	
-	/**
-	 * Parses a string representing a game state that was generated from
-	 * {@link #getGameState()}.
-	 * 
-	 * @param state	the game state.
-	 * @see {@link #getGameState()}
-	 */
+	
 	public void setGameState(String state) {
 		
 		restart();
 		
-		// Trivial cases
+		
 		if (state == null || state.isEmpty()) {
 			return;
 		}
 		
-		// Update the board
+		
 		int n = state.length();
 		for (int i = 0; i < 32 && i < n; i ++) {
 			try {
@@ -223,7 +178,7 @@ public class Game {
 			} catch (NumberFormatException e) {}
 		}
 		
-		// Update the other info
+		
 		if (n > 32) {
 			this.isP1Turn = (state.charAt(32) == '1');
 		}

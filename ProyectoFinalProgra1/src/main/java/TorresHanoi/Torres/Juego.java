@@ -198,12 +198,7 @@ public class Juego extends JPanel implements ActionListener, MouseListener  {
 
     }
 
-    /**
-     * Método que sirve para que los aros queden ordenados desde el mas grande
-     * hasta el mas pequeño
-     *
-     * @param n, el numero de aros que hay en las torres de hanoi
-     */
+    
     public void organizar(int n) {
         if (n >= 0) {
             for (int j = 1; j <= n - 1; j++) {
@@ -229,11 +224,7 @@ public class Juego extends JPanel implements ActionListener, MouseListener  {
 
     }
 
-    /**
-     * Metodo del evento del boton iniciar
-     *
-     * @param e
-     */
+   
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == iniciar) {
@@ -282,12 +273,7 @@ public class Juego extends JPanel implements ActionListener, MouseListener  {
         }
     }
 
-    /**
-     * Metodo que muestra las acciones cuando doy clicks entre las torres para
-     * poder mover un aro
-     *
-     * @param e
-     */
+  
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -347,9 +333,9 @@ public class Juego extends JPanel implements ActionListener, MouseListener  {
 
                 } else {
 
-                    //ultimo aro que hay en la torre
+                   
                     Anillo aroPresente = (Anillo) torre1.getComponent(torre1.getComponentCount() - 1);
-                    //si retorna true
+                 
                     if (verificar(aroPresente, aroMover)) {
 
                         aroMover.setBounds(x, 250 - (20 * torre1.getComponentCount() - 1), w, 20);
@@ -366,7 +352,7 @@ public class Juego extends JPanel implements ActionListener, MouseListener  {
             }
         }
 
-        //para soltar un aro en la torre 2 una vez echo click en un aro de otra torre
+       
         if (e.getSource() == torre2 && seleccionado == true) {
             if (aroMover != null) {
                 //guardar el ancho y alto para acomodar
@@ -374,16 +360,16 @@ public class Juego extends JPanel implements ActionListener, MouseListener  {
                 int w = aroMover.getWidth();//anchura
                 if (torre2.getComponentCount() == 0) {
 
-                    //acomodar el aro que entra
+                  
                     aroMover.setBounds(x, 250, w, 20);
 
                     torre2.add(aroMover);
                     torre2.updateUI();
 
-                    //contador que aumento para contar el numero de pasos del usuario
+                   
                     numeroDePasos++;
 
-                    //Para actualizar el Label de numero de pasos que hace el jugador
+                
                     pasosEchos.setText("Tu numero de movimientos: " + numeroDePasos);
 
                     aroMover = null;
@@ -415,46 +401,46 @@ public class Juego extends JPanel implements ActionListener, MouseListener  {
             }
         }
 
-        //para soltar un aro en la torre 3 una vez echo click en un aro de la otra torre
+      
         if (e.getSource() == torre3 && seleccionado == true) {
             if (aroMover != null) {
 
-                //guardar el ancho y alto para acomodar
+              
                 int x = aroMover.getX();//posicion en x
                 int h = aroMover.getHeight();//altura
                 int w = aroMover.getWidth();//anchura
                 if (torre3.getComponentCount() == 0) {
 
-                    //acomodar el aro que entra
+                   
                     aroMover.setBounds(x, 250, w, h);
 
                     torre3.add(aroMover);
                     torre3.updateUI();
                     aroMover = null;
 
-                    //contador que aumento para contar el numero de pasos del usuario
+                  
                     numeroDePasos++;
 
-                    //Para actualizar el Label de numero de pasos que hace el jugador
+                  
                     pasosEchos.setText("Tu numero de movimientos: " + numeroDePasos);
 
                     seleccionado = false;
 
                 } else {
 
-                    //ultimo aro que hay en la torre
+                   
                     Anillo aroPresente = (Anillo) torre3.getComponent(torre3.getComponentCount() - 1);
-                    //si retorna true
+                  
                     if (verificar(aroPresente, aroMover)) {
 
                         aroMover.setBounds(x, 250 - (20 * torre3.getComponentCount() - 1), w, 20);
                         torre3.add(aroMover);
                         torre3.updateUI();
 
-                        //contador que aumento para contar el numero de pasos del usuario
+                       
                         numeroDePasos++;
 
-                        //Para actualizar el Label de numero de pasos que hace el jugador
+                      
                         pasosEchos.setText("Tu numero de movimientos: " + numeroDePasos);
 
                         aroMover = null;
@@ -493,18 +479,11 @@ public class Juego extends JPanel implements ActionListener, MouseListener  {
     public void mouseExited(MouseEvent e) {
     }
 
-    /**
-     * Meotodo para verificar si el aro que se va a poner es mas pequeño que el
-     * que hay en la torre
-     *
-     * @param aroPresente
-     * @param aroAMover
-     * @return
-     */
+  
     public boolean verificar(Anillo aroPresente, Anillo aroAMover) {
-        //ancho del aro que hay en la torre
+      
         int w = aroPresente.getWidth();
-        //ancho del aro que se quiere poner
+       
         int w2 = aroAMover.getWidth();
 
         if (w > w2) {
@@ -515,7 +494,7 @@ public class Juego extends JPanel implements ActionListener, MouseListener  {
     }
 
   
-   // Cronometro cn= new Cronometro();
+  
 
    
   

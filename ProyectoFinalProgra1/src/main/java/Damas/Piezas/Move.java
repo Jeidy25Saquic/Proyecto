@@ -1,29 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Damas.Piezas;
 
 
 import java.awt.Point;
 
 
-/**
- * The {@code Move} class represents a move and contains a weight associated
- * with the move.
- */
+
 public class Move {
 	
-	/** The weight corresponding to an invalid move. */
+	
 	public static final double WEIGHT_INVALID = Double.NEGATIVE_INFINITY;
 
-	/** The start index of the move. */
+	
 	private byte startIndex;
 	
-	/** The end index of the move. */
+	
 	private byte endIndex;
 	
-	/** The weight associated with the move. */
+	
 	private double weight;
 	
 	public Move(int startIndex, int endIndex) {
